@@ -1,21 +1,21 @@
 package mate.academy.repository.impl;
 
 import java.util.List;
+import java.util.Optional;
+import lombok.RequiredArgsConstructor;
 import mate.academy.model.Book;
 import mate.academy.repository.BookRepository;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.hibernate.query.Query;
 import org.springframework.stereotype.Repository;
 
 @Repository
+@RequiredArgsConstructor
 public class BookRepositoryImpl implements BookRepository {
 
     private final SessionFactory sessionFactory;
-
-    public BookRepositoryImpl(SessionFactory sessionFactory) {
-        this.sessionFactory = sessionFactory;
-    }
 
     @Override
     public Book save(Book book) {
@@ -36,6 +36,18 @@ public class BookRepositoryImpl implements BookRepository {
             if (session != null) {
                 session.close();
             }
+        }
+    }
+
+    @Override
+    public Optional<Book> findById(Long id) {
+        try (Session session = sessionFactory.openSession()) {
+            Query<Book> query =
+                    session.createQuery("SELECT b FROM Book b WHERE b.id = :id", Book.class);
+            query.setParameter("id", id);
+            return query.uniqueResultOptional();
+        } catch (RuntimeException e) {
+            throw new RuntimeException("Cannot get all books from database.", e);
         }
     }
 
