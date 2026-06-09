@@ -8,28 +8,27 @@ import lombok.Getter;
 import lombok.Setter;
 
 public class CreateBookRequestDto {
-    @Getter
-    @Setter
+    @Getter @Setter
     @NotBlank
     private String title;
-    @Getter
-    @Setter
+
+    @Getter @Setter
     @NotBlank
     private String author;
-    @Getter
-    @Setter
+
+    @Getter @Setter
     @NotBlank
     private String isbn;
-    @Getter
-    @Setter
+
+    @Getter @Setter
     @NotBlank
     private String description;
-    @Getter
-    @Setter
+
+    @Getter @Setter
     @NotNull
     @Positive
     private BigDecimal price;
-    @Getter
-    @Setter
+
+    @Getter @Setter
     private String coverImage;
 }
