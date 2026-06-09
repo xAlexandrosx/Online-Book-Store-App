@@ -47,7 +47,7 @@ public class BookRepositoryImpl implements BookRepository {
             query.setParameter("id", id);
             return query.uniqueResultOptional();
         } catch (RuntimeException e) {
-            throw new RuntimeException("Cannot get all books from database.", e);
+            throw new RuntimeException("Cannot get book by id: " + id, e);
         }
     }
 
