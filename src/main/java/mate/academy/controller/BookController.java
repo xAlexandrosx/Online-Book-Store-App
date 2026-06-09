@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(value = "/books")
+@RequestMapping(value = "/api/books")
 public class BookController {
 
     private final BookService bookService;
@@ -34,7 +34,7 @@ public class BookController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public BookDto createBook(@RequestBody @Valid CreateBookRequestDto createBookRequestDto) {
-        return bookService.save(createBookRequestDto);
+    public BookDto createBook(@RequestBody @Valid CreateBookRequestDto bookDto) {
+        return bookService.save(bookDto);
     }
 }
