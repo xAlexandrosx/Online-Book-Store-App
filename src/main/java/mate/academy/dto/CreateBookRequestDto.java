@@ -18,6 +18,9 @@ public class CreateBookRequestDto {
     @NotBlank
     private String isbn;
 
+    @NotBlank
+    private String description;
+
     @NotNull
     @Positive
     private BigDecimal price;
