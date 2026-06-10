@@ -29,7 +29,7 @@ public class BookSpecificationBuilder implements SpecificationBuilder<Book> {
         }
 
         if (bookParams.isbns() != null && bookParams.isbns().length > 0) {
-            spec = spec.and(manager.getSpecificationProvider("titles")
+            spec = spec.and(manager.getSpecificationProvider("isbns")
                     .getSpecification(bookParams.isbns()));
         }
 
