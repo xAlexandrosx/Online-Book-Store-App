@@ -10,11 +10,11 @@ public class IsbnSpecificationProvider implements SpecificationProvider<Book> {
 
     @Override
     public String getKey() {
-        return "isbns";
+        return "isbn";
     }
 
     public Specification<Book> getSpecification(String[] params) {
         return (root, query, criteriaBuilder)
-                -> root.get("isbns").in(params);
+                -> root.get("isbn").in(params);
     }
 }

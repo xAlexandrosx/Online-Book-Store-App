@@ -10,11 +10,11 @@ public class AuthorSpecificationProvider implements SpecificationProvider<Book> 
 
     @Override
     public String getKey() {
-        return "authors";
+        return "author";
     }
 
     public Specification<Book> getSpecification(String [] params) {
         return (root, query, criteriaBuilder)
-                -> root.get("authors").in(params);
+                -> root.get("author").in(params);
     }
 }

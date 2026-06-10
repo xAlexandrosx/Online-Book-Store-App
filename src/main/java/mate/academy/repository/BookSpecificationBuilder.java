@@ -18,19 +18,19 @@ public class BookSpecificationBuilder implements SpecificationBuilder<Book> {
                 Specification.where((root, query, criteriaBuilder)
                         -> criteriaBuilder.conjunction());
 
-        if (bookParams.authors() != null && bookParams.authors().length > 0) {
-            spec = spec.and(manager.getSpecificationProvider("authors")
-                    .getSpecification(bookParams.authors()));
+        if (bookParams.author() != null && bookParams.author().length > 0) {
+            spec = spec.and(manager.getSpecificationProvider("author")
+                    .getSpecification(bookParams.author()));
         }
 
-        if (bookParams.titles() != null && bookParams.titles().length > 0) {
-            spec = spec.and(manager.getSpecificationProvider("titles")
-                    .getSpecification(bookParams.titles()));
+        if (bookParams.title() != null && bookParams.title().length > 0) {
+            spec = spec.and(manager.getSpecificationProvider("title")
+                    .getSpecification(bookParams.title()));
         }
 
-        if (bookParams.isbns() != null && bookParams.isbns().length > 0) {
-            spec = spec.and(manager.getSpecificationProvider("isbns")
-                    .getSpecification(bookParams.isbns()));
+        if (bookParams.isbn() != null && bookParams.isbn().length > 0) {
+            spec = spec.and(manager.getSpecificationProvider("isbn")
+                    .getSpecification(bookParams.isbn()));
         }
 
         return spec;

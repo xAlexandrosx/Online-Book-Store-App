@@ -30,26 +30,31 @@ public class BookController {
     private final BookService bookService;
 
     @GetMapping()
-    @Operation(summary = "Get paginated books", description = "Retrieves a paginated list of books. Supports page, size, and sort parameters.")
+    @Operation(summary = "Get paginated books",
+            description = "Retrieves a paginated list of books. "
+                    + "Supports page, size, and sort parameters.")
     public List<BookDto> getAll(Pageable pageable) {
         return bookService.findAll(pageable);
     }
 
     @GetMapping("/{id}")
-    @Operation(summary = "Get book by ID", description = "Retrieves specific book details using its unique database ID.")
+    @Operation(summary = "Get book by ID",
+            description = "Retrieves specific book details using its unique database ID.")
     public BookDto getBookById(@PathVariable Long id) {
         return bookService.getById(id);
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    @Operation(summary = "Create a new book", description = "Validates and saves a new book into the inventory database.")
+    @Operation(summary = "Create a new book",
+            description = "Validates and saves a new book into the inventory database.")
     public BookDto createBook(@RequestBody @Valid CreateBookRequestDto bookDto) {
         return bookService.save(bookDto);
     }
 
     @PutMapping("/{id}")
-    @Operation(summary = "Update an existing book", description = "Updates full details of an existing book matched by its unique ID.")
+    @Operation(summary = "Update an existing book",
+            description = "Updates full details of an existing book matched by its unique ID.")
     public BookDto updateBook(
             @PathVariable Long id,
             @RequestBody @Valid CreateBookRequestDto updateRequestDto) {
@@ -58,13 +63,16 @@ public class BookController {
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/{id}")
-    @Operation(summary = "Delete a book", description = "Permanently removes a book from the inventory database by its ID.")
+    @Operation(summary = "Delete a book",
+            description = "Permanently removes a book from the inventory database by its ID.")
     public void delete(@PathVariable Long id) {
         bookService.deleteById(id);
     }
 
     @GetMapping("/search")
-    @Operation(summary = "Search books dynamically", description = "Dynamically searches and filters books using optional specifications like title, author, or price range.")
+    @Operation(summary = "Search books dynamically",
+            description = "Dynamically searches and filters books using optional "
+                    + "specifications like title, author, or price range.")
     public List<BookDto> search(BookSearchParams params) {
         return bookService.search(params);
     }
