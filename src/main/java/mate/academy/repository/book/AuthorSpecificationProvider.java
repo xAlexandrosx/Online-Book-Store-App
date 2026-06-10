@@ -14,7 +14,6 @@ public class AuthorSpecificationProvider implements SpecificationProvider<Book> 
     }
 
     public Specification<Book> getSpecification(String [] params) {
-
         return (root, query, criteriaBuilder)
                 -> root.get("authors").in(params);
     }
