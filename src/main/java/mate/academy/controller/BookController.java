@@ -6,7 +6,7 @@ import jakarta.validation.Valid;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import mate.academy.dto.BookDto;
-import mate.academy.dto.BookSearchParams;
+import mate.academy.dto.BookSearchParametersDto;
 import mate.academy.dto.CreateBookRequestDto;
 import mate.academy.service.BookService;
 import org.springframework.data.domain.Pageable;
@@ -73,7 +73,7 @@ public class BookController {
     @Operation(summary = "Search books dynamically",
             description = "Dynamically searches and filters books using optional "
                     + "specifications like title, author, or price range.")
-    public List<BookDto> search(BookSearchParams params) {
+    public List<BookDto> search(BookSearchParametersDto params) {
         return bookService.search(params);
     }
 }
