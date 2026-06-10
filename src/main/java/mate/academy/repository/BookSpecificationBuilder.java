@@ -1,7 +1,7 @@
 package mate.academy.repository;
 
 import lombok.RequiredArgsConstructor;
-import mate.academy.dto.BookSearchParams;
+import mate.academy.dto.BookSearchParametersDto;
 import mate.academy.model.Book;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
@@ -13,7 +13,7 @@ public class BookSpecificationBuilder implements SpecificationBuilder<Book> {
     private final SpecificationProviderManager<Book> manager;
 
     @Override
-    public Specification<Book> build(BookSearchParams bookParams) {
+    public Specification<Book> build(BookSearchParametersDto bookParams) {
         Specification<Book> spec =
                 Specification.where((root, query, criteriaBuilder)
                         -> criteriaBuilder.conjunction());

@@ -13,7 +13,6 @@ public class BookSpecificationProviderManager implements SpecificationProviderMa
 
     @Override
     public SpecificationProvider<Book> getSpecificationProvider(String key) {
-
         return bookSpecificationProviders
                 .stream()
                 .filter(b -> b.getKey().equals(key))
