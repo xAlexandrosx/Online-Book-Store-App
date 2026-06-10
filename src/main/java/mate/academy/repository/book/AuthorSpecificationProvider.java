@@ -10,7 +10,7 @@ public class AuthorSpecificationProvider implements SpecificationProvider<Book> 
 
     @Override
     public String getKey() {
-        return "authors";
+        return "author";
     }
 
     @Override
