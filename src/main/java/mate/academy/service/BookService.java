@@ -4,6 +4,7 @@ import java.util.List;
 import mate.academy.dto.BookDto;
 import mate.academy.dto.BookSearchParams;
 import mate.academy.dto.CreateBookRequestDto;
+import org.springframework.data.domain.Pageable;
 
 public interface BookService {
 
@@ -11,7 +12,7 @@ public interface BookService {
 
     BookDto getById(Long id);
 
-    List<BookDto> findAll();
+    List<BookDto> findAll(Pageable pageable);
 
     BookDto updateById(Long id, CreateBookRequestDto updateRequestDto);
 
