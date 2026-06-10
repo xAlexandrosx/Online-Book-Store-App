@@ -10,21 +10,15 @@ import lombok.Setter;
 @Getter
 @Setter
 public class CreateBookRequestDto {
-
     @NotBlank
     private String title;
-
     @NotBlank
     private String author;
-
     @NotBlank
     private String isbn;
-  
+    private String description;
     @NotNull
     @Positive
     private BigDecimal price;
-
     private String coverImage;
-
-    private String description;
 }
