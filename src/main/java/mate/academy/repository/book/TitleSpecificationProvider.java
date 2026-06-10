@@ -10,12 +10,11 @@ public class TitleSpecificationProvider implements SpecificationProvider<Book> {
 
     @Override
     public String getKey() {
-        return "title";
+        return "titles";
     }
 
-    @Override
-    public Specification<Book> getSpecification(String[] params) {
+    public Specification<Book> getSpecification(String [] params) {
         return (root, query, criteriaBuilder)
-                -> root.get("title").in(params);
+                -> root.get("titles").in(params);
     }
 }
