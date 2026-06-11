@@ -3,12 +3,12 @@ package mate.academy.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import mate.academy.dto.BookDto;
 import mate.academy.dto.BookSearchParametersDto;
 import mate.academy.dto.CreateBookRequestDto;
 import mate.academy.service.BookService;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -29,17 +29,19 @@ public class BookController {
 
     private final BookService bookService;
 
-    @GetMapping()
+    @GetMapping
     @Operation(summary = "Get paginated books",
             description = "Retrieves a paginated list of books. "
                     + "Supports page, size, and sort parameters.")
-    public List<BookDto> getAll(Pageable pageable) {
+    @ResponseStatus(HttpStatus.OK)
+    public Page<BookDto> getAll(Pageable pageable) {
         return bookService.findAll(pageable);
     }
 
     @GetMapping("/{id}")
     @Operation(summary = "Get book by ID",
             description = "Retrieves specific book details using its unique database ID.")
+    @ResponseStatus(HttpStatus.OK)
     public BookDto getBookById(@PathVariable Long id) {
         return bookService.getById(id);
     }
@@ -55,6 +57,7 @@ public class BookController {
     @PutMapping("/{id}")
     @Operation(summary = "Update an existing book",
             description = "Updates full details of an existing book matched by its unique ID.")
+    @ResponseStatus(HttpStatus.OK)
     public BookDto updateBook(
             @PathVariable Long id,
             @RequestBody @Valid CreateBookRequestDto updateRequestDto) {
@@ -72,8 +75,9 @@ public class BookController {
     @GetMapping("/search")
     @Operation(summary = "Search books dynamically",
             description = "Dynamically searches and filters books using optional "
-                    + "specifications like title, author, or price range.")
-    public List<BookDto> search(BookSearchParametersDto params) {
-        return bookService.search(params);
+                    + "specifications like title, author, or price range. Supports pagination.")
+    @ResponseStatus(HttpStatus.OK)
+    public Page<BookDto> search(BookSearchParametersDto params, Pageable pageable) {
+        return bookService.search(params, pageable);
     }
 }
