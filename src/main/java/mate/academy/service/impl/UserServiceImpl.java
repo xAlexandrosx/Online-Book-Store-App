@@ -21,8 +21,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserResponseDto save(UserRegistrationRequestDto requestDto) {
-        if (!userRepository.findByEmailIgnoreCase(
-                requestDto.getEmail()).isEmpty()) {
+        requestDto.setEmail(requestDto.getEmail().toLowerCase());
+        if (userRepository.findByEmail(
+                requestDto.getEmail()).isPresent()) {
             throw new RegistrationException(
                     "User with email: "
                     + requestDto.getEmail()
@@ -55,26 +56,20 @@ public class UserServiceImpl implements UserService {
         );
 
         if (!existingUser.getEmail().equalsIgnoreCase(requestDto.getEmail())
-                && !userRepository.findByEmailIgnoreCase(requestDto.getEmail()).isEmpty()) {
+                && userRepository.findByEmail(requestDto.getEmail()).isPresent()) {
             throw new RegistrationException(
                     "Email " + requestDto.getEmail() + " is already in use.");
         }
-
         userMapper.updateUserFromDto(requestDto, existingUser);
-
         User updatedUser = userRepository.save(existingUser);
-
         return userMapper.toDto(updatedUser);
     }
 
     @Override
     public void deleteById(Long id) {
-
         if (!userRepository.existsById(id)) {
             throw new EntityNotFoundException("Cannot find user with id: " + id);
         }
-
         userRepository.deleteById(id);
-
     }
 }
