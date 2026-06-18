@@ -22,7 +22,7 @@ public class AuthenticationController {
 
     private final UserService userService;
 
-    @PostMapping
+    @PostMapping("/registration")
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(summary = "Register a new user.",
             description = "Validates and saves a new user into the database.")

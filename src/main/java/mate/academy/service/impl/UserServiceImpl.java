@@ -7,7 +7,9 @@ import mate.academy.dto.user.UserResponseDto;
 import mate.academy.exception.EntityNotFoundException;
 import mate.academy.exception.RegistrationException;
 import mate.academy.mapper.UserMapper;
+import mate.academy.model.Role;
 import mate.academy.model.User;
+import mate.academy.repository.RoleRepository;
 import mate.academy.repository.UserRepository;
 import mate.academy.service.UserService;
 import org.springframework.stereotype.Service;
@@ -16,6 +18,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
+    private final RoleRepository roleRepository;
     private final UserRepository userRepository;
     private final UserMapper userMapper;
 
@@ -29,7 +32,13 @@ public class UserServiceImpl implements UserService {
                     + requestDto.getEmail()
                     + " already exists.");
         }
-        User saved = userRepository.save(userMapper.toEntity(requestDto));
+
+        User user = userMapper.toEntity(requestDto);
+
+
+
+
+        User saved = userRepository.save(user);
         return userMapper.toDto(saved);
     }
 

@@ -11,6 +11,7 @@ import mate.academy.service.BookService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -34,6 +35,7 @@ public class BookController {
             description = "Retrieves a paginated list of books. "
                     + "Supports page, size, and sort parameters.")
     @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasRole('USER')")
     public Page<BookDto> getAll(Pageable pageable) {
         return bookService.findAll(pageable);
     }
@@ -42,6 +44,7 @@ public class BookController {
     @Operation(summary = "Get book by ID",
             description = "Retrieves specific book details using its unique database ID.")
     @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasRole('USER')")
     public BookDto getBookById(@PathVariable Long id) {
         return bookService.getById(id);
     }
@@ -50,6 +53,7 @@ public class BookController {
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(summary = "Create a new book",
             description = "Validates and saves a new book into the inventory database.")
+    @PreAuthorize("hasRole('ADMIN')")
     public BookDto createBook(@RequestBody @Valid CreateBookRequestDto bookDto) {
         return bookService.save(bookDto);
     }
@@ -58,6 +62,7 @@ public class BookController {
     @Operation(summary = "Update an existing book",
             description = "Updates full details of an existing book matched by its unique ID.")
     @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasRole('ADMIN')")
     public BookDto updateBook(
             @PathVariable Long id,
             @RequestBody @Valid CreateBookRequestDto updateRequestDto) {
@@ -68,6 +73,7 @@ public class BookController {
     @DeleteMapping("/{id}")
     @Operation(summary = "Delete a book",
             description = "Permanently removes a book from the inventory database by its ID.")
+    @PreAuthorize("hasRole('ADMIN')")
     public void delete(@PathVariable Long id) {
         bookService.deleteById(id);
     }
@@ -77,6 +83,7 @@ public class BookController {
             description = "Dynamically searches and filters books using optional "
                     + "specifications like title, author, or price range. Supports pagination.")
     @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasRole('USER')")
     public Page<BookDto> search(BookSearchParametersDto params, Pageable pageable) {
         return bookService.search(params, pageable);
     }
