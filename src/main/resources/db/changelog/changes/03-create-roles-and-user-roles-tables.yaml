@@ -47,7 +47,6 @@ databaseChangeLog:
                   constraints:
                     nullable: false
 
-        # 4. Add Constraints
         - addPrimaryKey:
             tableName: user_roles
             columnNames: user_id, role_id

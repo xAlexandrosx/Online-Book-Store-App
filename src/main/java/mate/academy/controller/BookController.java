@@ -31,9 +31,7 @@ public class BookController {
     private final BookService bookService;
 
     @GetMapping
-    @Operation(summary = "Get paginated books",
-            description = "Retrieves a paginated list of books. "
-                    + "Supports page, size, and sort parameters.")
+    @Operation(summary = "Get paginated books")
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("hasRole('USER')")
     public Page<BookDto> getAll(Pageable pageable) {
@@ -41,8 +39,7 @@ public class BookController {
     }
 
     @GetMapping("/{id}")
-    @Operation(summary = "Get book by ID",
-            description = "Retrieves specific book details using its unique database ID.")
+    @Operation(summary = "Get book by ID")
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("hasRole('USER')")
     public BookDto getBookById(@PathVariable Long id) {
@@ -51,16 +48,14 @@ public class BookController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    @Operation(summary = "Create a new book",
-            description = "Validates and saves a new book into the inventory database.")
+    @Operation(summary = "Create a new book")
     @PreAuthorize("hasRole('ADMIN')")
     public BookDto createBook(@RequestBody @Valid CreateBookRequestDto bookDto) {
         return bookService.save(bookDto);
     }
 
     @PutMapping("/{id}")
-    @Operation(summary = "Update an existing book",
-            description = "Updates full details of an existing book matched by its unique ID.")
+    @Operation(summary = "Update an existing book")
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("hasRole('ADMIN')")
     public BookDto updateBook(
@@ -71,17 +66,14 @@ public class BookController {
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/{id}")
-    @Operation(summary = "Delete a book",
-            description = "Permanently removes a book from the inventory database by its ID.")
+    @Operation(summary = "Delete a book")
     @PreAuthorize("hasRole('ADMIN')")
     public void delete(@PathVariable Long id) {
         bookService.deleteById(id);
     }
 
     @GetMapping("/search")
-    @Operation(summary = "Search books dynamically",
-            description = "Dynamically searches and filters books using optional "
-                    + "specifications like title, author, or price range. Supports pagination.")
+    @Operation(summary = "Search books dynamically")
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("hasRole('USER')")
     public Page<BookDto> search(BookSearchParametersDto params, Pageable pageable) {
