@@ -2,6 +2,7 @@ package mate.academy.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import mate.academy.dto.book.BookDto;
+import mate.academy.dto.book.BookDtoWithoutCategoryIds;
 import mate.academy.dto.book.BookSearchParametersDto;
 import mate.academy.dto.book.CreateBookRequestDto;
 import mate.academy.exception.EntityNotFoundException;
@@ -25,9 +26,7 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public BookDto save(CreateBookRequestDto createBookRequestDto) {
-
         Book saved = bookRepository.save(bookMapper.toEntity(createBookRequestDto));
-
         return bookMapper.toDto(saved);
     }
 
@@ -69,5 +68,12 @@ public class BookServiceImpl implements BookService {
         Specification<Book> bookSpecification = specBuilder.build(bookParams);
         return bookRepository.findAll(bookSpecification, pageable)
                 .map(bookMapper::toDto);
+    }
+
+    @Override
+    public Page<BookDtoWithoutCategoryIds> getBooksByCategoryId(Long id, Pageable pageable) {
+        return bookRepository
+                .findAllByCategoryId(id, pageable)
+                .map(bookMapper::toDtoWithoutCategories);
     }
 }
