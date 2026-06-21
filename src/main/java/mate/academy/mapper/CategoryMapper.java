@@ -16,4 +16,13 @@ public interface CategoryMapper {
     default Long map(Category category) {
         return category != null ? category.getId() : null;
     }
+
+    default Category map(Long id) {
+        if (id == null) {
+            return null;
+        }
+        Category category = new Category();
+        category.setId(id);
+        return category;
+    }
 }

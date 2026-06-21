@@ -12,6 +12,7 @@ import mate.academy.model.Role;
 import mate.academy.model.User;
 import mate.academy.repository.RoleRepository;
 import mate.academy.repository.UserRepository;
+import mate.academy.service.ShoppingCartService;
 import mate.academy.service.UserService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -24,6 +25,7 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final UserMapper userMapper;
     private final PasswordEncoder passwordEncoder;
+    private final ShoppingCartService shoppingCartService;
 
     @Override
     public UserResponseDto save(UserRegistrationRequestDto requestDto) {
@@ -41,6 +43,7 @@ public class UserServiceImpl implements UserService {
                 () -> new EntityNotFoundException("Can't find role with type USER")
         );
         user.setRoles(Set.of(roleUser));
+        shoppingCartService.createShoppingCart(user);
         User saved = userRepository.save(user);
         return userMapper.toDto(saved);
     }

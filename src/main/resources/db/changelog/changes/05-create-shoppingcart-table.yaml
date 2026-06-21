@@ -1,0 +1,44 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1782052717143-1
+      author: user
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            tableName: shopping_carts
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_shopping_carts
+                  name: id
+                  type: BIGINT
+              - column:
+                  constraints:
+                    nullable: false
+                  name: user_id
+                  type: BIGINT
+
+  - changeSet:
+      id: 1782052717143-2
+      author: user
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addUniqueConstraint:
+            columnNames: user_id
+            constraintName: uc_shopping_carts_user
+            tableName: shopping_carts
+  - changeSet:
+      id: 1782052717143-3
+      author: user
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: user_id
+            baseTableName: shopping_carts
+            constraintName: FK_SHOPPING_CARTS_ON_USER
+            referencedColumnNames: id
+            referencedTableName: users
+
