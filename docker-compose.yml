@@ -5,16 +5,16 @@ services:
     image: mysql:8.0
     container_name: online-book-store-db
     environment:
-      MYSQLDB_DATABASE: ${DB_NAME}
-      MYSQLDB_USER: ${DB_USERNAME}
-      MYSQLDB_PASSWORD: ${DB_PASSWORD}
-      MYSQLDB_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQLDB_NAME}
+      MYSQL_USER: ${MYSQLDB_USERNAME}
+      MYSQL_PASSWORD: ${MYSQLDB_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${MYSQLDB_ROOT_PASSWORD}
     ports:
-      - "${DB_PORT}:3306"
+      - "${MYSQLDB_PORT}:3306"
     volumes:
       - mysql_data:/var/lib/mysql
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${MYSQLDB_ROOT_PASSWORD}"]
       timeout: 5s
       retries: 5
 
@@ -24,11 +24,11 @@ services:
     ports:
       - "${APP_PORT}:8080"
     environment:
-      MYSQLDB_HOST: ${DB_HOST}
-      MYSQLDB_PORT: ${DB_PORT}
-      MYSQLDB_NAME: ${DB_NAME}
-      MYSQLDB_USERNAME: ${DB_USERNAME}
-      MYSQLDB_PASSWORD: ${DB_PASSWORD}
+      DB_HOST: ${DB_HOST}
+      DB_PORT: ${DB_PORT}
+      DB_NAME: ${DB_NAME}
+      DB_USERNAME: ${DB_USERNAME}
+      DB_PASSWORD: ${DB_PASSWORD}
       JWT_SECRET: ${JWT_SECRET}
     depends_on:
       mysql-db:
