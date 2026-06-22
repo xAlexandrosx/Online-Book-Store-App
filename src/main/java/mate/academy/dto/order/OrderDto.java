@@ -6,7 +6,6 @@ import java.util.Set;
 import lombok.Getter;
 import lombok.Setter;
 import mate.academy.dto.orderitem.OrderItemDto;
-import mate.academy.dto.user.UserResponseDto;
 
 @Getter
 @Setter
