@@ -10,8 +10,7 @@ import mate.academy.dto.order.OrderDto;
 @Setter
 public class OrderItemDto {
     private Long id;
-    private OrderDto order;
-    private BookDto book;
+    private Long bookId;
     private int quantity;
     private BigDecimal price;
 }

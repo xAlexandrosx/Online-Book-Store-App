@@ -8,7 +8,7 @@ import org.springframework.data.domain.Pageable;
 
 public interface OrderService {
 
-    OrderDto placeOrder(Long userId);
+    OrderDto placeOrder(Long userId, String shippingAddress);
 
     Page<OrderDto> viewOrderHistory(Long userId, Pageable pageable);
 

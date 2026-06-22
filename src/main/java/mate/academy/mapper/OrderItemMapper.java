@@ -5,10 +5,12 @@ import mate.academy.dto.orderitem.OrderItemDto;
 import mate.academy.model.CartItem;
 import mate.academy.model.OrderItem;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
 @Mapper(config = MapperConfig.class)
 public interface OrderItemMapper {
 
+    @Mapping(target = "bookId", source = "book.id")
     OrderItemDto toDto(OrderItem orderItem);
 
     default OrderItem toEntityFromCartItem(CartItem cartItem) {

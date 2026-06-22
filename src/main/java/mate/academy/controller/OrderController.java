@@ -2,6 +2,8 @@ package mate.academy.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import mate.academy.dto.order.OrderDto;
 import mate.academy.dto.order.UpdateStatusRequest;
@@ -35,9 +37,10 @@ public class OrderController {
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("hasRole('USER')")
     public OrderDto placeOrder(
-            @AuthenticationPrincipal User user) {
+            @AuthenticationPrincipal User user,
+            @NotNull String shippingAddress) {
 
-        return orderService.placeOrder(user.getId());
+        return orderService.placeOrder(user.getId(), shippingAddress);
     }
 
     @GetMapping
@@ -81,7 +84,7 @@ public class OrderController {
     @PreAuthorize("hasRole('ADMIN')")
     public OrderDto updateOrderStatus(
             @PathVariable Long id,
-            @RequestBody UpdateStatusRequest request) {
+            @RequestBody @Valid UpdateStatusRequest request) {
 
         return orderService.updateOrderStatus(id, request.status());
     }

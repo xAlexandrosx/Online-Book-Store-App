@@ -37,7 +37,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     @Transactional
-    public OrderDto placeOrder(Long userId) {
+    public OrderDto placeOrder(Long userId, String shippingAddress) {
 
         ShoppingCart cart = shoppingCartRepository.getShoppingCartByUserId(userId).orElseThrow(
                 () -> new EntityNotFoundException("No shopping cart for user with id: " + userId)
@@ -67,7 +67,7 @@ public class OrderServiceImpl implements OrderService {
                 () -> new EntityNotFoundException("Cannot find user with id: " + userId)
         );
 
-        order.setShippingAddress(user.getShippingAddress());
+        order.setShippingAddress(shippingAddress);
         order.setUser(user);
         order.setTotal(total);
         order.setOrderDate(LocalDateTime.now());
