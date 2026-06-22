@@ -13,7 +13,6 @@ import mate.academy.dto.user.UserResponseDto;
 public class OrderDto {
     private Long id;
     private Long userId;
-    private UserResponseDto userResponseDto;
     private String status;
     private BigDecimal total;
     private LocalDateTime orderDate;
