@@ -5,10 +5,10 @@ services:
     image: mysql:8.0
     container_name: online-book-store-db
     environment:
-      MYSQL_DATABASE: ${DB_NAME}
-      MYSQL_USER: ${DB_USERNAME}
-      MYSQL_PASSWORD: ${DB_PASSWORD}
-      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+      MYSQLDB_DATABASE: ${DB_NAME}
+      MYSQLDB_USER: ${DB_USERNAME}
+      MYSQLDB_PASSWORD: ${DB_PASSWORD}
+      MYSQLDB_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
     ports:
       - "${DB_PORT}:3306"
     volumes:
@@ -24,11 +24,11 @@ services:
     ports:
       - "${APP_PORT}:8080"
     environment:
-      DB_HOST: ${DB_HOST}
-      DB_PORT: ${DB_PORT}
-      DB_NAME: ${DB_NAME}
-      DB_USERNAME: ${DB_USERNAME}
-      DB_PASSWORD: ${DB_PASSWORD}
+      MYSQLDB_HOST: ${DB_HOST}
+      MYSQLDB_PORT: ${DB_PORT}
+      MYSQLDB_NAME: ${DB_NAME}
+      MYSQLDB_USERNAME: ${DB_USERNAME}
+      MYSQLDB_PASSWORD: ${DB_PASSWORD}
       JWT_SECRET: ${JWT_SECRET}
     depends_on:
       mysql-db:
