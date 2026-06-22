@@ -32,7 +32,7 @@ public class BookServiceImpl implements BookService {
     public BookDto save(CreateBookRequestDto createBookRequestDto) {
 
         Set<Category> categories =
-                categoryRepository.getAllByIdIn(createBookRequestDto.getCategoryIds());
+                categoryRepository.findAllByIdIn(createBookRequestDto.getCategoryIds());
         Book book = bookMapper.toEntity(createBookRequestDto);
         book.setCategories(categories);
         Book saved = bookRepository.save(book);

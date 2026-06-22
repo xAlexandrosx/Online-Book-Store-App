@@ -11,6 +11,8 @@ import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.Objects;
+
 @Entity
 @Table(name = "cart_items")
 @Getter
@@ -26,4 +28,19 @@ public class CartItem {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "shopping_cart_id", nullable = false)
     private ShoppingCart shoppingCart;
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        CartItem cartItem = (CartItem) o;
+        return quantity == cartItem.quantity
+                && Objects.equals(id, cartItem.id)
+                && Objects.equals(book, cartItem.book)
+                && Objects.equals(shoppingCart, cartItem.shoppingCart);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, book, quantity, shoppingCart);
+    }
 }

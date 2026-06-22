@@ -31,7 +31,7 @@ public class ShoppingCartController {
     private final ShoppingCartService shoppingCartService;
 
     @GetMapping
-    @Operation(summary = "Get shoppingcart")
+    @Operation(summary = "Get shopping cart")
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("hasRole('USER')")
     public ShoppingCartDto getCart(

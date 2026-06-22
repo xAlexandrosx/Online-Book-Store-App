@@ -33,7 +33,6 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     @Override
     public void createShoppingCart(User owner) {
         ShoppingCart shoppingCart = new ShoppingCart();
-        shoppingCart.setCartItems(new HashSet<>());
         shoppingCart.setUser(owner);
         shoppingCartRepository.save(shoppingCart);
     }
@@ -41,7 +40,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     @Override
     public ShoppingCartDto getByOwnerId(Long userId) {
         ShoppingCart shoppingCart =
-                shoppingCartRepository.getShoppingCartByUserId(userId).orElseThrow(
+                shoppingCartRepository.findByUserId(userId).orElseThrow(
                         () -> new EntityNotFoundException(
                         "No shopping cart found for owner id: " + userId)
         );
@@ -51,7 +50,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     @Override
     @Transactional
     public ShoppingCartDto addCartItemToCart(Long userId, CreateCartItemRequestDto requestDto) {
-        ShoppingCart shoppingCart = shoppingCartRepository.getShoppingCartByUserId(userId)
+        ShoppingCart shoppingCart = shoppingCartRepository.findByUserId(userId)
                 .orElseThrow(() -> new EntityNotFoundException(
                         "No shopping cart found for owner id: " + userId));
 
@@ -92,7 +91,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
             Integer quantity) {
 
         ShoppingCart shoppingCart =
-                shoppingCartRepository.getShoppingCartByUserId(userId).orElseThrow(
+                shoppingCartRepository.findByUserId(userId).orElseThrow(
                         () -> new EntityNotFoundException(
                         "No shopping cart found for owner id: " + userId)
         );
@@ -117,7 +116,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     @Transactional
     public void removeCartItemFromCart(Long userId, Long cartItemId) {
         ShoppingCart shoppingCart =
-                shoppingCartRepository.getShoppingCartByUserId(userId).orElseThrow(
+                shoppingCartRepository.findByUserId(userId).orElseThrow(
                         () -> new EntityNotFoundException(
                         "No shopping cart found for owner id: " + userId)
         );
@@ -129,7 +128,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         );
 
         if (!cartItem.getShoppingCart().getId().equals(shoppingCart.getId())) {
-            throw new IllegalArgumentException(
+            throw new NoCartItemInShoppingCartException(
                     "Cart item does not belong to this user's shopping cart.");
         }
 
