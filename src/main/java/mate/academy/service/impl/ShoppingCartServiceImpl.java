@@ -1,10 +1,12 @@
 package mate.academy.service.impl;
 
 import java.util.HashSet;
+import java.util.Optional;
 import lombok.AllArgsConstructor;
 import mate.academy.dto.cartitem.CreateCartItemRequestDto;
 import mate.academy.dto.shoppingcart.ShoppingCartDto;
 import mate.academy.exception.EntityNotFoundException;
+import mate.academy.exception.NoCartItemInShoppingCartException;
 import mate.academy.mapper.CartItemMapper;
 import mate.academy.mapper.ShoppingCartMapper;
 import mate.academy.model.Book;
@@ -49,38 +51,46 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     @Override
     @Transactional
     public ShoppingCartDto addCartItemToCart(Long userId, CreateCartItemRequestDto requestDto) {
-        ShoppingCart shoppingCart =
-                shoppingCartRepository.getShoppingCartByUserId(userId).orElseThrow(
-                        () -> new EntityNotFoundException(
-                        "No shopping cart found for owner id: " + userId)
-        );
+        ShoppingCart shoppingCart = shoppingCartRepository.getShoppingCartByUserId(userId)
+                .orElseThrow(() -> new EntityNotFoundException(
+                        "No shopping cart found for owner id: " + userId));
 
-        Book book = bookRepository.findById(requestDto.getBookId()).orElseThrow(
-                () -> new EntityNotFoundException(
-                        "No book found with book id: " + requestDto.getBookId())
-        );
+        Book book = bookRepository.findById(requestDto.getBookId())
+                .orElseThrow(() -> new EntityNotFoundException(
+                        "No book found with book id: " + requestDto.getBookId()));
 
-        for (CartItem item : shoppingCart.getCartItems()) {
-            if (item.getBook().getId().equals(book.getId())) {
-                item.setQuantity(item.getQuantity() + requestDto.getQuantity());
-                return shoppingCartMapper.toDto(shoppingCart);
-            }
+        Optional<CartItem> existingItem = findCartItemByBookId(shoppingCart, book.getId());
+
+        if (existingItem.isPresent()) {
+            CartItem item = existingItem.get();
+            item.setQuantity(item.getQuantity() + requestDto.getQuantity());
+            cartItemRepository.save(item);
+        } else {
+            CartItem cartItem = cartItemMapper.toEntity(requestDto);
+            cartItem.setShoppingCart(shoppingCart);
+            cartItem.setBook(book);
+            cartItemRepository.save(cartItem);
+            shoppingCart.getCartItems().add(cartItem);
         }
 
-        CartItem cartItem = cartItemMapper.toEntity(requestDto);
-        cartItem.setShoppingCart(shoppingCart);
-        cartItem.setBook(book);
-        cartItemRepository.save(cartItem);
-
-        shoppingCart.getCartItems().add(cartItem);
         return shoppingCartMapper.toDto(shoppingCart);
+    }
+
+    private Optional<CartItem> findCartItemByBookId(ShoppingCart shoppingCart, Long bookId) {
+        return shoppingCart
+                .getCartItems()
+                .stream()
+                .filter(item -> item.getBook().getId().equals(bookId))
+                .findFirst();
     }
 
     @Override
     @Transactional
-    public ShoppingCartDto updateCartItemQuantity(Long userId,
-                                                  Long cartItemId,
-                                                  Integer quantity) {
+    public ShoppingCartDto updateCartItemQuantity(
+            Long userId,
+            Long cartItemId,
+            Integer quantity) {
+
         ShoppingCart shoppingCart =
                 shoppingCartRepository.getShoppingCartByUserId(userId).orElseThrow(
                         () -> new EntityNotFoundException(
@@ -93,11 +103,11 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         );
 
         if (!cartItem.getShoppingCart().getId().equals(shoppingCart.getId())) {
-            throw new IllegalArgumentException(
+            throw new NoCartItemInShoppingCartException(
                     "Cart item does not belong to this user's shopping cart.");
         }
 
-        cartItem.setQuantity(quantity.intValue());
+        cartItem.setQuantity(quantity);
         cartItemRepository.save(cartItem);
 
         return shoppingCartMapper.toDto(shoppingCart);

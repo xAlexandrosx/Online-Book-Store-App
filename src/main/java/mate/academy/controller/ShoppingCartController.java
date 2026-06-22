@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import mate.academy.dto.cartitem.CreateCartItemRequestDto;
+import mate.academy.dto.cartitem.UpdateCartItemRequestDto;
 import mate.academy.dto.shoppingcart.ShoppingCartDto;
 import mate.academy.model.User;
 import mate.academy.service.ShoppingCartService;
@@ -40,7 +41,7 @@ public class ShoppingCartController {
 
     @PostMapping
     @Operation(summary = "Add item to shopping cart")
-    @ResponseStatus(HttpStatus.OK)
+    @ResponseStatus(HttpStatus.CREATED)
     @PreAuthorize("hasRole('USER')")
     public ShoppingCartDto addCartItemToCart(
             @AuthenticationPrincipal User user,
@@ -56,9 +57,10 @@ public class ShoppingCartController {
     public ShoppingCartDto updateCartItemQuantity(
             @AuthenticationPrincipal User user,
             @PathVariable Long cartItemId,
-            Integer quantity) {
+            @RequestBody @Valid UpdateCartItemRequestDto requestDto) {
 
-        return shoppingCartService.updateCartItemQuantity(user.getId(), cartItemId, quantity);
+        return shoppingCartService
+                .updateCartItemQuantity(user.getId(), cartItemId, requestDto.getQuantity());
     }
 
     @DeleteMapping("/cart-items/{cartItemId}")
