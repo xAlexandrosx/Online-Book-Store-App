@@ -1,5 +1,6 @@
 package mate.academy.service.impl;
 
+import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import mate.academy.dto.book.BookDto;
 import mate.academy.dto.book.BookDtoWithoutCategoryIds;
@@ -8,7 +9,9 @@ import mate.academy.dto.book.CreateBookRequestDto;
 import mate.academy.exception.EntityNotFoundException;
 import mate.academy.mapper.BookMapper;
 import mate.academy.model.Book;
+import mate.academy.model.Category;
 import mate.academy.repository.BookRepository;
+import mate.academy.repository.CategoryRepository;
 import mate.academy.repository.SpecificationBuilder;
 import mate.academy.service.BookService;
 import org.springframework.data.domain.Page;
@@ -23,11 +26,15 @@ public class BookServiceImpl implements BookService {
     private final BookRepository bookRepository;
     private final BookMapper bookMapper;
     private final SpecificationBuilder<Book> specBuilder;
+    private final CategoryRepository categoryRepository;
 
     @Override
     public BookDto save(CreateBookRequestDto createBookRequestDto) {
-        Book saved = bookRepository.save(bookMapper.toEntity(createBookRequestDto));
-        return bookMapper.toDto(saved);
+        Set<Category> categories =
+                categoryRepository.findAllByIdIn(createBookRequestDto.getCategoryIds());
+        Book book = bookMapper.toEntity(createBookRequestDto);
+        book.setCategories(categories);
+        return bookMapper.toDto(bookRepository.save(book));
     }
 
     @Override
