@@ -1,6 +1,5 @@
 package mate.academy.service.impl;
 
-import java.util.HashSet;
 import java.util.Optional;
 import lombok.AllArgsConstructor;
 import mate.academy.dto.cartitem.CreateCartItemRequestDto;

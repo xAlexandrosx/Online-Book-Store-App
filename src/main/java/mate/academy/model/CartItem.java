@@ -8,10 +8,9 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import java.util.Objects;
 import lombok.Getter;
 import lombok.Setter;
-
-import java.util.Objects;
 
 @Entity
 @Table(name = "cart_items")
@@ -31,7 +30,9 @@ public class CartItem {
 
     @Override
     public boolean equals(Object o) {
-        if (o == null || getClass() != o.getClass()) return false;
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         CartItem cartItem = (CartItem) o;
         return quantity == cartItem.quantity
                 && Objects.equals(id, cartItem.id)
