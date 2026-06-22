@@ -62,8 +62,8 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 
         for (CartItem item : shoppingCart.getCartItems()) {
             if (item.getBook().getId().equals(book.getId())) {
-                throw new RuntimeException(
-                        "Book with id: " + book.getId() + " already exists in cart.");
+                item.setQuantity(item.getQuantity() + requestDto.getQuantity());
+                return shoppingCartMapper.toDto(shoppingCart);
             }
         }
 
@@ -80,7 +80,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     @Transactional
     public ShoppingCartDto updateCartItemQuantity(Long userId,
                                                   Long cartItemId,
-                                                  Long quantity) {
+                                                  Integer quantity) {
         ShoppingCart shoppingCart =
                 shoppingCartRepository.getShoppingCartByUserId(userId).orElseThrow(
                         () -> new EntityNotFoundException(

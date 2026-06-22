@@ -1,6 +1,7 @@
 package mate.academy.dto.cartitem;
 
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -10,5 +11,6 @@ public class CreateCartItemRequestDto {
     @NotNull
     private Long bookId;
     @NotNull
-    private int quantity;
+    @Positive
+    private Integer quantity;
 }

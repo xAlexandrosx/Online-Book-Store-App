@@ -12,7 +12,7 @@ public interface ShoppingCartService {
 
     ShoppingCartDto addCartItemToCart(Long userId, CreateCartItemRequestDto requestDto);
 
-    ShoppingCartDto updateCartItemQuantity(Long userId, Long cartItemId, Long quantity);
+    ShoppingCartDto updateCartItemQuantity(Long userId, Long cartItemId, Integer quantity);
 
     void removeCartItemFromCart(Long userId, Long cartItemId);
 }

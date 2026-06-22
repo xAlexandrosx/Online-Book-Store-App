@@ -16,6 +16,7 @@ import mate.academy.service.ShoppingCartService;
 import mate.academy.service.UserService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -28,6 +29,7 @@ public class UserServiceImpl implements UserService {
     private final ShoppingCartService shoppingCartService;
 
     @Override
+    @Transactional
     public UserResponseDto save(UserRegistrationRequestDto requestDto) {
         requestDto.setEmail(requestDto.getEmail().toLowerCase());
         if (userRepository.findByEmail(
@@ -43,9 +45,9 @@ public class UserServiceImpl implements UserService {
                 () -> new EntityNotFoundException("Can't find role with type USER")
         );
         user.setRoles(Set.of(roleUser));
-        shoppingCartService.createShoppingCart(user);
-        User saved = userRepository.save(user);
-        return userMapper.toDto(saved);
+        User savedUser = userRepository.save(user);
+        shoppingCartService.createShoppingCart(savedUser);
+        return userMapper.toDto(savedUser);
     }
 
     @Override
