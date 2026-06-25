@@ -9,17 +9,20 @@ import mate.academy.model.Book;
 import mate.academy.model.Category;
 import org.mapstruct.AfterMapping;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 
 @Mapper(config = MapperConfig.class, uses = CategoryMapper.class)
 public interface BookMapper {
 
+    @Mapping(target = "categories", ignore = true)
     Book toEntity(CreateBookRequestDto createBookRequestDto);
 
     BookDto toDto(Book book);
 
     BookDtoWithoutCategoryIds toDtoWithoutCategories(Book book);
 
+    @Mapping(target = "categories", ignore = true)
     void updateBookFromDto(CreateBookRequestDto dto, @MappingTarget Book book);
 
     @AfterMapping
